@@ -1,0 +1,132 @@
+<table id="Core_Hosp"></table>
+<script type="text/javascript">
+window.Core_Hosp = {
+	//工具栏
+	toolbar: [
+		{ text: '添加', iconCls: 'icons-table-table_add', handler: function(){Core_Hosp.add();} },
+		{ text: '刷新', iconCls: 'icons-table-table_refresh', handler: function(){$.Oa.refresh();} },
+		{ text: '排序', iconCls: 'icons-table-table_sort', handler: function(){Core_Hosp.order();} }
+	],
+
+	//排序格式化
+	sort: function(val, row){
+		return '<input class="sort-input-Hosp" type="text" name="sort['+row['id']+']" value="'+ val +'" size="2" style="text-align:center">';
+	},
+
+	//状态格式化
+	status: function(value){
+		if(value >= 1){//为真时
+			return '<span class="oa-block tree-icon tree-file icons-arrow-accept"></span>';
+		} else {
+			return '<span class="oa-block tree-icon tree-file icons-other-cancel"></span>';
+		}
+	},
+
+	//排序方法开始
+	order: function(){
+		$.messager.progress({text:'医院排序中，请稍候...'});
+		$.post("<{:U('Core/sortHosp')}>",$(".sort-input-Hosp").serialize(),function(data){
+			$.messager.progress("close")
+			if(!data.status){
+				$.Oa.tip('提示信息', data.info,'error');
+			}else{
+				$.Oa.tip('提示信息', data.info,'info');
+			}
+		},'json').error(function(){
+			$.messager.progress({text:"排序失败，请联系管理员！3秒后关闭..."});
+            setTimeout('$.messager.progress("close")',3000);
+		});
+	},
+
+	//添加医院
+	add: function(){
+		$($.Oa.dialog_1).dialog({
+			title: '添加医院',
+			width: '330',
+			height: '280',
+			iconCls: 'icon-add',
+			href: '<{:U("Core/addHosp/")}>',
+			modal: true
+		});
+	},
+
+	//编辑医院
+	edit: function(id){
+		if(id == null){
+			var row = $('#Core_Hosp').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$($.Oa.dialog_1).dialog({
+			title: '编辑医院',
+			width: '330',
+			height: '280',
+			iconCls: 'icon-edit',
+			href: '<{:U("Core/editHosp/")}>/id/'+id,
+			modal: true
+		});
+	},
+
+	//删除医院
+	delete: function(id){
+		if(id == null){
+			var row = $('#Core_Hosp').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$.Oa.confirm('$.Oa.delData("'+id+'","<{:U("Core/delHosp")}>")')
+	}
+}
+</script>
+<script>
+/**
+ * 医院容器实例化数据
+ */
+$("#Core_Hosp").datagrid({
+	title: "系统中心 > 医院设置 > 医院管理",
+	singleSelect:true,
+	nowrap:true,
+	border: false,
+	fitColumns: true,
+	fit: true,
+	toolbar: Core_Hosp.toolbar,
+	idField: 'id',
+	rownumbers: true,
+	animate: true,
+	url: "<{:U('Core/Hosp')}>",
+	columns:[[
+		{field:'sort',title:'排序',align:'center',formatter:Core_Hosp.sort,width:30},
+		{field:'id',title:'医院ID',align:'center',width:20},
+		{field:'title',title:'医院名称',width:80},
+		{field:'status',title:'医院状态',formatter:Core_Hosp.status,width:20},
+		{field:'desc',title:'描述',width:220}
+	]],
+	pagination:true,
+	pagePosition:'bottom',
+	pageNumber:1,
+	pageSize:20,
+	pageList:[20,30,50],
+	onDblClickRow: function(rowIndex,rowData){
+		Core_Hosp.edit(rowData.id);
+	},
+	onRowContextMenu: function(e, rowIndex,rowData){
+		e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("unselectAll"); //取消所有选中项
+        $(this).datagrid("selectRow",rowIndex); //根据索引选中该行
+        $('#Core_Hosp_Menu').menu('show', {//显示右键部门
+            left: e.pageX,//在鼠标点击处显示部门
+            top: e.pageY
+        });
+	}
+});
+</script>
+<div id="Core_Hosp_Menu" class="easyui-menu" style="display:none;">
+	<div data-options="iconCls:'icon-edit'" onclick="Core_Hosp.edit()">修改</div>
+	<div data-options="iconCls:'icon-cancel'" onclick="Core_Hosp.delete()">删除</div>
+</div>

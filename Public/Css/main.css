@@ -1,0 +1,91 @@
+body{font-family:"微软雅黑"}
+a{color:#08c;text-decoration:none;}
+p{margin:0px;}
+.clear {clear:both;height:1px;margin-top:-px;overflow:hidden;}
+/**
+ * Oa公用样式
+ */
+.oa-loading{height:20px;line-height:20px;padding-left:22px;margin:10px;background:url(../Images/loading.gif) left center no-repeat;}
+.oa-block{margin:0px auto;display:block;}
+
+
+#north{background:#428bca;}
+.oa-logo{height:63px;font-size:36px;float:left;color:#fff;line-height:72px;padding:10px;}
+.oa-menu{float:left;}
+.oa-menu a{width:80px;height:20px;overflow:hidden;float:left;color:#fff;padding-top:60px;line-height:20px;text-align:center;font-size:16px;text-decoration:none;}
+.oa-menu a.oa-menu-system{background:url(../Images/system.png) center top no-repeat;}
+.oa-menu a.oa-menu-system.active{background:url(../Images/system.png) center top no-repeat #327FC5;border-bottom:3px solid #95B8E7;}
+.oa-menu a.oa-menu-app{background:url(../Images/app.png) center top no-repeat;}
+.oa-menu a.oa-menu-app.active{background:url(../Images/app.png) center top no-repeat #327FC5;border-bottom:3px solid #95B8E7;}
+.oa-menu a.oa-menu-user{background:url(../Images/user.png) center top no-repeat;}
+.oa-menu a.oa-menu-user.active{background:url(../Images/user.png) center top no-repeat #327FC5;border-bottom:3px solid #95B8E7;}
+.oa-user{margin-top:45px;float:right;position:relative;overflow:hidden;}
+.oa-user .easyui-menubutton{width:118px;}
+.oa-user .l-btn{border-radius: 0;}
+.oa-user .l-btn-plain:hover{border-radius: 0;background: none repeat scroll 0 0 rgb(43,127,181);}
+.oa-user .l-btn-text{color:white;font-size: 18px;line-height: 35px;}
+.oa-user .m-btn-downarrow,.oa-user .s-btn-downarrow {color: white;font-size: 18px;}
+.oa-user .m-btn-plain-active,.oa-user .s-btn-plain-active{
+    background: none repeat scroll 0 0 rgb(43,127,181);
+}
+
+/**
+ * EasyUI样式改造
+ * @author 杨圆建 624508914@qq.com
+ * 2015年3月10日11:07:58
+ */
+/**
+ * [左侧菜单一级分类改造]
+ * @type {[type]}
+ */
+#left li .tree-node{padding:0px 10px;height:30px;line-height:30px;margin:5px auto 0px auto;}
+#left li .tree-node-hover{border:1px dashed #fff;}
+#left li .tree-node-selected{border:1px dashed #fff;}
+#left li .tree-node .tree-indent{display:none;}
+#left li .tree-node .tree-hit{margin-top:5px;}
+#left li .tree-title{height:30px;line-height:30px;font-weight:bold;}
+#left li .tree-icon{height:30px;line-height:30px;padding:0px 5px;}
+
+#left li .tree-node{width:160px;height:30px;line-height:30px;margin:5px auto 0px auto;}
+#left li .tree-node-hover{border:1px dashed #fff;}
+#left li .tree-node-selected{border:1px dashed #fff;}
+#left li .tree-node .tree-indent{display:none;}
+#left li .tree-title{height:30px;line-height:30px;}
+#left li .tree-icon{height:30px;line-height:30px;padding:0px 5px;}
+/**
+ * [左侧菜单二级分类改造]
+ * @type {[type]}
+ */
+#left li ul li .tree-node{width:128px;height:30px;line-height:30px;margin:5px auto 0px auto;}
+#left li ul li .tree-node-hover{border:1px dashed #fff;}
+#left li ul li .tree-node-selected{border:1px dashed #fff;}
+#left li ul li .tree-node .tree-indent{display:none;}
+#left li ul li .tree-title{height:30px;line-height:30px;}
+#left li ul li .tree-icon{height:30px;line-height:30px;padding:0px 5px;}
+
+#left li ul li .tree-node{width:128px;height:30px;line-height:30px;margin:5px auto 0px auto;}
+#left li ul li .tree-node-hover{border:1px dashed #fff;}
+#left li ul li .tree-node-selected{border:1px dashed #fff;}
+#left li ul li .tree-node .tree-indent{display:none;}
+#left li ul li .tree-title{height:30px;line-height:30px;font-weight:normal;}
+#left li ul li .tree-icon{height:30px;line-height:30px;padding:0px 5px;}
+/**
+ * [type 表单元素样式改造]
+ * @type {String}
+ */
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+    background-color: #ffffff;
+    border: 1px solid #95b8e7;
+    border-radius: 5px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    display: inline-block;
+    padding: 4px;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+}
+input[type="radio"], input[type="checkbox"] {
+    line-height: normal;
+    margin: 4px 0 0;
+}
+input[type="file"], input[type="image"], input[type="submit"], input[type="reset"], input[type="button"], input[type="radio"], input[type="checkbox"] {
+    width: auto;
+}

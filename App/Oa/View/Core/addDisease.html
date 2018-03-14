@@ -1,0 +1,20 @@
+<form id="addDisease" action="<{:U('Core/addDisease')}>" method="post">
+	<input type="hidden" name="addDisease" value="addDisease" />
+	<table cellspacing="6" width="100%">
+		<tr>
+			<td>疾病名称：</td>
+			<td><input class="easyui-textbox" data-options="required:true,validType:['length[2,20]']"  name="title" type="text" style="width:160px" /></td>
+		</tr>
+		<tr>
+			<td>所属医院：</td>
+			<td><input class="easyui-combobox" data-options="valueField: 'id',required:true,textField: 'title',url: '<{:U('CoreCommon/listHosp')}>'"  name="hosp_id" style="width:170px" /></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td align="right">
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="$.Oa.confirm('$.Oa.doForm(\'#addDisease\')')">添加疾病</a>
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="$($.Oa.dialog_1).dialog('close')">关闭窗口</a>
+			</td>
+		</tr>
+	</table>
+</form>

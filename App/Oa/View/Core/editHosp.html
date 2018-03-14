@@ -1,0 +1,32 @@
+<form id="editHosp" action="<{:U('Core/editHosp')}>" method="post">
+	<input type="hidden" name="editHosp" value="editHosp" />
+	<input type="hidden" name="id" value="<{$Hosp.id}>" />
+	<table cellspacing="6" width="100%">
+		<tr>
+			<td>医院名称：</td>
+			<td><input class="easyui-textbox" data-options="required:true,validType:['length[2,20]']"  name="title" type="text" style="width:220px" value="<{$Hosp.title}>" /></td>
+		</tr>
+		<tr>
+			<td>医院排序：</td>
+			<td><input class="easyui-textbox" data-options="required:true,validType:['length[1,20]']"  name="sort" type="text" style="width:220px" value="<{$Hosp.sort}>" /></td>
+		</tr>
+		<tr>
+			<td>医院状态：</td>
+			<td>
+				<label><input name="status" value="1" type="radio" <if condition="$Hosp.status">checked</if> />正常</label>
+				<label><input name="status" value="0" type="radio" <if condition="$Hosp.status eq 0">checked</if> />禁用</label>
+			</td>
+		</tr>
+		<tr>
+			<td>医院描述：</td>
+			<td><textarea style="width:220px;height:80px;" name='desc'><{$Hosp.desc}></textarea></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td align="right">
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="$.Oa.confirm('$.Oa.doForm(\'#editHosp\')')">编辑医院</a>
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="$($.Oa.dialog_1).dialog('close')">关闭窗口</a>
+			</td>
+		</tr>
+	</table>
+</form>

@@ -1,0 +1,31 @@
+<div class="easyui-panel" title="个人中心 > 用户操作 > 修改密码" style="padding:10px 0px;" data-options="fit:true">
+	<form id="EditPass" action="<{:U('Person/EditPass')}>" method="post">
+		<input type="hidden" name="EditPass" value="EditPass" />
+	    <table>
+			<tr>
+				<td width='70' align='right'>当前密码：</td>
+				<td>
+					<input class="easyui-textbox" data-options="required:true,validType:['length[6,20]']"  name="oldpass" type="password" style="width:160px" />
+				</td>
+			</tr>
+			<tr>
+				<td width='70' align='right'>新的密码：</td>
+				<td>
+					<input class="easyui-textbox" data-options="required:true,validType:['length[6,20]']"  name="pass" type="password" style="width:160px" id="EditPass_password" />
+				</td>
+			</tr>
+			<tr>
+				<td width='70' align='right'>确认密码：</td>
+				<td>
+					<input class="easyui-textbox" data-options="required:true,validType:['password[\'#EditPass_password\']','length[6,20]']"  name="pass2" type="password" style="width:160px" />
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td align="left">
+					<a class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="$.Oa.confirm('$.Oa.doForm(\'#EditPass\')')">修改密码</a>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>

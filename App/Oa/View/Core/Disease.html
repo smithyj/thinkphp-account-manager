@@ -1,0 +1,126 @@
+<table id="Core_Disease"></table>
+<div id="Core_Disease_Search">
+	<table cellspacing="0" cellpadding="0">
+		<tbody>
+			<tr>
+				<td>
+					<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" onclick="Core_Disease.add()">
+						<span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">添加</span><span class="l-btn-icon icons-table-table_add">&nbsp;</span></span>
+					</a>
+					<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" onclick="$.Oa.refresh()">
+						<span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">刷新</span><span class="l-btn-icon icons-table-table_refresh">&nbsp;</span></span>
+					</a>
+					<br />
+					<form id="Core_Disease_Search_Form" style="float:right">
+						<span style="padding-left:10px;">医院：</span><input name="search[hosp_id]" class="easyui-combobox" style="width:120px" data-options="valueField: 'id',textField: 'title',url: '<{:U('CoreCommon/listHosp')}>/type/all'">
+						<a href="javascript:;" onclick="Core_Disease.search()" class="easyui-linkbutton" iconCls
+="icons-table-table">搜索</a>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+window.Core_Disease = {
+	//工具栏
+	toolbar: "#Core_Disease_Search",
+	//搜索
+	search: function(){
+		$("#Core_Disease").datagrid('loadData', { total: 0, rows: [] });
+		var queryParams = $("#Core_Disease").datagrid('options').queryParams;
+		$.each($("#Core_Disease_Search_Form").serializeArray(), function() {
+			queryParams[$(this).attr('name')] = $(this).attr('value');
+		});
+		$("#Core_Disease").datagrid({pageNumber: 1});
+	},
+	//添加疾病
+	add: function(){
+		$($.Oa.dialog_1).dialog({
+			title: '添加疾病',
+			width: '280',
+			height: '150',
+			iconCls: 'icon-add',
+			href: '<{:U("Core/addDisease/")}>',
+			modal: true
+		});
+	},
+
+	//编辑疾病
+	edit: function(id){
+		if(id == null){
+			var row = $('#Core_Disease').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$($.Oa.dialog_1).dialog({
+			title: '编辑疾病',
+			width: '280',
+			height: '150',
+			iconCls: 'icon-edit',
+			href: '<{:U("Core/editDisease/")}>/id/'+id,
+			modal: true
+		});
+	},
+
+	//删除疾病
+	delete: function(id){
+		if(id == null){
+			var row = $('#Core_Disease').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$.Oa.confirm('$.Oa.delData("'+id+'","<{:U("Core/delDisease")}>")')
+	}
+}
+</script>
+<script>
+/**
+ * 疾病容器实例化数据
+ */
+$("#Core_Disease").datagrid({
+	title: "系统中心 > 医院设置 > 疾病管理",
+	singleSelect:true,
+	nowrap:true,
+	border: false,
+	fitColumns: true,
+	fit: true,
+	toolbar: Core_Disease.toolbar,
+	idField: 'id',
+	rownumbers: true,
+	animate: true,
+	url: "<{:U('Core/Disease')}>",
+	columns:[[
+		{field:'id',title:'疾病ID',align:'center',width:20},
+		{field:'title',title:'疾病名称',width:100},
+		{field:'hosp_title',title:'所属医院',width:100},
+	]],
+	pagination:true,
+	pagePosition:'bottom',
+	pageNumber:1,
+	pageSize:20,
+	pageList:[20,30,50],
+	onDblClickRow: function(rowIndex,rowData){
+		Core_Disease.edit(rowData.id);
+	},
+	onRowContextMenu: function(e, rowIndex,rowData){
+		e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("unselectAll"); //取消所有选中项
+        $(this).datagrid("selectRow",rowIndex); //根据索引选中该行
+        $('#Core_Disease_Menu').menu('show', {//显示右键部门
+            left: e.pageX,//在鼠标点击处显示部门
+            top: e.pageY
+        });
+	}
+});
+</script>
+<div id="Core_Disease_Menu" class="easyui-menu" style="display:none;">
+	<div data-options="iconCls:'icon-edit'" onclick="Core_Disease.edit()">修改</div>
+	<div data-options="iconCls:'icon-cancel'" onclick="Core_Disease.delete()">删除</div>
+</div>

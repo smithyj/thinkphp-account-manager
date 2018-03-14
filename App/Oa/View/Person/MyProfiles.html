@@ -1,0 +1,17 @@
+<div class="easyui-panel" title="个人中心 > 用户操作 > 我的资料" style="padding:10px 0px;" data-options="fit:true">
+    <table>
+		<tr><td width='70' align='right'>用户id：</td><td><{$User.uid}></td></tr>
+		<tr><td align='right'>登录名：</td><td><{$User.name}></td></tr>
+		<tr><td align='right'>昵称：</td><td><{$User.title}></td></tr>
+		<tr><td align='right'>职务：</td><td><{$User.job_title}></td></tr>
+		<tr><td align='right'>手机：</td><td><{$User.phone}></td></tr>
+		<tr><td align='right'>QQ：</td><td><{$User.qq}></td></tr>
+		<tr><td align='right'>回访权限：</td><td><if condition="$User.visit egt 1"><span class="tree-icon tree-file icons-arrow-accept"></span><else /><span class="tree-icon tree-file icons-other-cancel"></span></if></td></tr>
+		<tr><td align='right'>用户状态：</td><td><if condition="$User.status egt 1"><span class="tree-icon tree-file icons-arrow-accept"></span><else /><span class="tree-icon tree-file icons-other-cancel"></span></if></td></tr>
+		<tr><td align='right'>数据级别：</td><td><if condition="$User.data_level egt 1"><strong style="color:red;">管理</strong><else />普通</if></td></tr>
+		<tr><td align='right'>所在部门：</td><td><{$User.branch_title}></td></tr>
+		<tr><td align='right'>授权医院：</td><td><{$Hosps}></td></tr>
+		<tr><td align='right'>授权角色：</td><td><{$Groups}></td></tr>
+		<tr><td align='right'>创建时间：</td><td><{$User.create_date}></td></tr>
+	</table>
+</div>

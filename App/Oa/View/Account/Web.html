@@ -1,0 +1,199 @@
+<table id="Account_Web"></table>
+<div id="Account_Web_Search">
+	<table cellspacing="0" cellpadding="0">
+		<tbody>
+			<tr>
+				<td>
+					<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" onclick="Account_Web.add()">
+						<span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">添加</span><span class="l-btn-icon icons-table-table_add">&nbsp;</span></span>
+					</a>
+					<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" onclick="$.Oa.refresh()">
+						<span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">刷新</span><span class="l-btn-icon icons-table-table_refresh">&nbsp;</span></span>
+					</a>
+					<br />
+					<form id="Account_Web_Search_Form" style="float:right">
+						<span style="padding-left:10px;">网址：</span>
+						<input class="easyui-textbox" name="search[dns_domain]" type="text" style="width:100px" />
+						<span style="padding-left:10px;">网站名称：</span>
+						<input class="easyui-textbox" name="search[title]" type="text" style="width:100px" />
+						<span style="padding-left:10px;">医院：</span>
+						<input name="search[hosp_id]" class="easyui-combobox" style="width:120px" data-options="valueField: 'id',textField: 'title',url: '<{:U('CoreCommon/listHosp')}>/type/all'">
+						<span style="padding-left:10px;">类型：</span>
+						<input name="search[web_type_id]" class="easyui-combobox" style="width:120px" data-options="valueField: 'id',textField: 'title',url: '<{:U('AccountCommon/listWebType')}>/type/all'">
+						<span style="padding-left:10px;">服务器：</span>
+						<input name="search[host_id]" class="easyui-combobox" style="width:120px" data-options="valueField: 'id',textField: 'title',url: '<{:U('AccountCommon/listHost')}>/type/all'">
+						<a href="javascript:;" onclick="Account_Web.search()" class="easyui-linkbutton" iconCls
+="icons-table-table">搜索</a>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+window.Account_Web = {
+	//工具栏
+	toolbar: "#Account_Web_Search",
+	//搜索
+	search: function(){
+		$("#Account_Web").datagrid('loadData', { total: 0, rows: [] });
+		var queryParams = $("#Account_Web").datagrid('options').queryParams;
+		$.each($("#Account_Web_Search_Form").serializeArray(), function() {
+			queryParams[$(this).attr('name')] = $(this).attr('value');
+		});
+		$("#Account_Web").datagrid({pageNumber: 1});
+	},
+	//添加网站
+	add: function(){
+		$($.Oa.dialog_1).dialog({
+			title: '添加网站',
+			width: '510',
+			height: '255',
+			iconCls: 'icon-add',
+			href: '<{:U("Account/addWeb/")}>',
+			modal: true
+		});
+	},
+
+	//编辑网站
+	edit: function(id){
+		if(id == null){
+			var row = $('#Account_Web').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$($.Oa.dialog_1).dialog({
+			title: '编辑网站',
+			width: '510',
+			height: '255',
+			iconCls: 'icon-edit',
+			href: '<{:U("Account/editWeb/")}>/id/'+id,
+			modal: true
+		});
+	},
+
+	//删除网站
+	delete: function(id){
+		if(id == null){
+			var row = $('#Account_Web').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$.Oa.confirm('$.Oa.delData("'+id+'","<{:U("Account/delWeb")}>")')
+	},
+
+	//主机头格式化
+	host_domain: function(value,row){
+		if(value == '@'){
+			return "<a href='http://"+row.name+"' target='_blank'>"+value+"</a>";
+		} else {
+			return "<a href='http://"+value+"."+row.name+"' target='_blank'>"+value+"</a>";
+		}
+	},
+
+	dns_domain: function(value,row){
+		var dns_domain = row.dns_domain_title;
+		if(dns_domain != undefined){
+			dns_domain = dns_domain.split(",");
+			return "<a href='javascript:void(0)' onclick='Account_Web.show_dns_domain("+row.id+")'>"+dns_domain.length+" 个解析绑定</a>";
+		}
+	},
+	show_dns_domain: function(id){
+		var row = $("#Account_Web").datagrid('selectRecord',id);
+		row = $("#Account_Web").datagrid('getSelected');
+		$($.Oa.dialog_1).dialog({
+			title: '域名解析绑定',
+			iconCls: 'icons-application-application_view_detail',
+			width: 180,
+			height: 200,
+			cache: false,
+			href: null,
+			content: "<div style='padding:10px;'>"+(row.dns_domain_title).replace(/,/g,"<br />")+"</div>",
+			modal: true,
+			collapsible: false,
+			minimizable: false,
+			resizable: true,
+			maximizable: true
+		});
+	},
+	opert_id: function(value,row){
+		return "<a href='javascript:void(0)' onclick='Account_Web.show_web("+row.id+")'>查看网站信息</a>";
+	},
+	show_web: function(id){
+		$($.Oa.dialog_1).dialog({
+			title: '查看网站信息',
+			iconCls: 'icons-application-application_view_detail',
+			width: 180,
+			height: 300,
+			cache: false,
+			href: "<{:U('Account/showWeb')}>/id/"+id,
+			modal: true,
+			collapsible: false,
+			minimizable: false,
+			resizable: true,
+			maximizable: true
+		});
+	}
+}
+</script>
+<script>
+/**
+ * 网站容器实例化数据
+ */
+$("#Account_Web").datagrid({
+	title: "应用中心 > 账号关系系统 > 网站管理",
+	singleSelect:true,
+	nowrap:true,
+	border: false,
+	fitColumns: true,
+	fit: true,
+	toolbar: Account_Web.toolbar,
+	idField: 'id',
+	rownumbers: true,
+	animate: true,
+	multiSort: true,
+	url: "<{:U('Account/Web')}>",
+	columns:[[
+		{field:'id',title:'ID',align:'center',width:10,sortable:true},
+		{field:'iis_name',title:'IIS标识',width:30,sortable:true},
+		{field:'title',title:'网站名称',width:20,sortable:true},
+		{field:'web_dir',title:'网站目录',width:20,sortable:true},
+		{field:'admin_dir',title:'后台目录',width:20,sortable:true},
+		{field:'admin_user',title:'后台账号',width:10,sortable:true},
+		{field:'admin_pass',title:'后台密码',width:20,sortable:true},
+		{field:'web_type_title',title:'网站类型',width:10,sortable:true},
+		{field:'hosp_title',title:'所属医院',width:20,sortable:true},
+		{field:'host_title',title:'所属服务器',width:20,sortable:true},
+		{field:'sql_user_title',title:'数据库用户',width:20},
+		{field:'sql_object_title',title:'数据库对象',width:20},
+		{field:'dns_domain_title',title:'域名解析绑定',width:20,formatter:Account_Web.dns_domain}
+	]],
+	pagination:true,
+	pagePosition:'bottom',
+	pageNumber:1,
+	pageSize:100,
+	pageList:[100,200,500],
+	onDblClickRow: function(rowIndex,rowData){
+		Account_Web.edit(rowData.id);
+	},
+	onRowContextMenu: function(e, rowIndex,rowData){
+		e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("unselectAll"); //取消所有选中项
+        $(this).datagrid("selectRow",rowIndex); //根据索引选中该行
+        $('#Account_Web_Menu').menu('show', {//显示右键部门
+            left: e.pageX,//在鼠标点击处显示部门
+            top: e.pageY
+        });
+	}
+});
+</script>
+<div id="Account_Web_Menu" class="easyui-menu" style="display:none;">
+	<div data-options="iconCls:'icon-edit'" onclick="Account_Web.edit()">修改</div>
+	<div data-options="iconCls:'icon-cancel'" onclick="Account_Web.delete()">删除</div>
+</div>

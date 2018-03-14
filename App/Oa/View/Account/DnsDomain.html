@@ -1,0 +1,143 @@
+<table id="Account_DnsDomain"></table>
+<div id="Account_DnsDomain_Search">
+	<table cellspacing="0" cellpadding="0">
+		<tbody>
+			<tr>
+				<td>
+					<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" onclick="Account_DnsDomain.add()">
+						<span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">添加</span><span class="l-btn-icon icons-table-table_add">&nbsp;</span></span>
+					</a>
+					<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" onclick="$.Oa.refresh()">
+						<span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">刷新</span><span class="l-btn-icon icons-table-table_refresh">&nbsp;</span></span>
+					</a>
+					<br />
+					<form id="Account_DnsDomain_Search_Form" style="float:right">
+						<span style="padding-left:10px;">主机头：</span>
+						<input class="easyui-textbox" name="search[host_domain]" type="text" style="width:100px" />
+						<span style="padding-left:10px;">域名：</span>
+						<input name="search[domain_id]" class="easyui-combobox" style="width:120px" data-options="valueField: 'id',textField: 'title',url: '<{:U('AccountCommon/listDomain')}>/type/all'">
+						<span style="padding-left:10px;">服务器：</span>
+						<input name="search[host_id]" class="easyui-combobox" style="width:120px" data-options="valueField: 'id',textField: 'title',url: '<{:U('AccountCommon/listHost')}>/type/all'">
+						<a href="javascript:;" onclick="Account_DnsDomain.search()" class="easyui-linkbutton" iconCls
+="icons-table-table">搜索</a>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+window.Account_DnsDomain = {
+	//工具栏
+	toolbar: "#Account_DnsDomain_Search",
+	//搜索
+	search: function(){
+		$("#Account_DnsDomain").datagrid('loadData', { total: 0, rows: [] });
+		var queryParams = $("#Account_DnsDomain").datagrid('options').queryParams;
+		$.each($("#Account_DnsDomain_Search_Form").serializeArray(), function() {
+			queryParams[$(this).attr('name')] = $(this).attr('value');
+		});
+		$("#Account_DnsDomain").datagrid({pageNumber: 1});
+	},
+	//添加域名解析
+	add: function(){
+		$($.Oa.dialog_1).dialog({
+			title: '添加域名解析',
+			width: '260',
+			height: '150',
+			iconCls: 'icon-add',
+			href: '<{:U("Account/addDnsDomain/")}>',
+			modal: true
+		});
+	},
+
+	//编辑域名解析
+	edit: function(id){
+		if(id == null){
+			var row = $('#Account_DnsDomain').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$($.Oa.dialog_1).dialog({
+			title: '编辑域名解析',
+			width: '285',
+			height: '150',
+			iconCls: 'icon-edit',
+			href: '<{:U("Account/editDnsDomain/")}>/id/'+id,
+			modal: true
+		});
+	},
+
+	//删除域名解析
+	delete: function(id){
+		if(id == null){
+			var row = $('#Account_DnsDomain').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$.Oa.confirm('$.Oa.delData("'+id+'","<{:U("Account/delDnsDomain")}>")')
+	},
+
+	//主机头格式化
+	host_domain: function(value,row){
+		if(value == '@'){
+			return "<a href='http://"+row.name+"' target='_blank'>"+value+"</a>";
+		} else {
+			return "<a href='http://"+value+"."+row.name+"' target='_blank'>"+value+"</a>";
+		}
+	}
+}
+</script>
+<script>
+/**
+ * 域名解析容器实例化数据
+ */
+$("#Account_DnsDomain").datagrid({
+	title: "应用中心 > 账号关系系统 > 域名解析管理",
+	singleSelect:true,
+	nowrap:true,
+	border: false,
+	fitColumns: true,
+	fit: true,
+	toolbar: Account_DnsDomain.toolbar,
+	idField: 'id',
+	rownumbers: true,
+	animate: true,
+	multiSort: true,
+	url: "<{:U('Account/DnsDomain')}>",
+	columns:[[
+		{field:'id',title:'ID',align:'center',width:20,sortable:true},
+		{field:'host_domain',title:'主机头',width:20,sortable:true,formatter:Account_DnsDomain.host_domain},
+		{field:'name',title:'所属域名',width:100,sortable:true},
+		{field:'web_count',title:'网站数',width:20,align:'center'},
+		{field:'ip',title:'指向IP',width:100,sortable:true}
+	]],
+	pagination:true,
+	pagePosition:'bottom',
+	pageNumber:1,
+	pageSize:20,
+	pageList:[20,30,50],
+	onDblClickRow: function(rowIndex,rowData){
+		Account_DnsDomain.edit(rowData.id);
+	},
+	onRowContextMenu: function(e, rowIndex,rowData){
+		e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("unselectAll"); //取消所有选中项
+        $(this).datagrid("selectRow",rowIndex); //根据索引选中该行
+        $('#Account_DnsDomain_Menu').menu('show', {//显示右键部门
+            left: e.pageX,//在鼠标点击处显示部门
+            top: e.pageY
+        });
+	}
+});
+</script>
+<div id="Account_DnsDomain_Menu" class="easyui-menu" style="display:none;">
+	<div data-options="iconCls:'icon-edit'" onclick="Account_DnsDomain.edit()">修改</div>
+	<div data-options="iconCls:'icon-cancel'" onclick="Account_DnsDomain.delete()">删除</div>
+</div>

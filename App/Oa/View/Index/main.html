@@ -1,0 +1,61 @@
+<div class="easyui-panel" data-options="fit:true,title:'后台首页',border:false,onResize:function(){$('#oa-main-portal').portal({border:false,fit:true});}" style="overflow-x:hidden;">
+	<div id="oa-main-portal">
+		<div style="width:50%">
+			<div title="我的个人信息" collapsible="true" style="padding:8px;">
+				您好，<{$sess_User['info']['name']}><br />
+				所属角色：<{$Groups}> <br />
+				最后登录时间：<{$last_Login['date']}><br />
+				最后登录IP：<{$last_Login['ip']}><br />
+				最后登录地点：<{$last_Login['country']}><br />
+				最后登录网络：<{$last_Login['area']}>
+			</div>
+
+			<div title="到期提醒" collapsible="true" style="padding:8px;">
+				<table width="100%" style="border:1px solid #ccc;">
+					<tr>
+						<th colspan='4'><{:C('EXPIRE_DATE')}>天内 服务器到期产品</th>
+					</tr>
+					<foreach name="Host" item="Host">
+						<tr style="color:red;">
+							<td align="right">IP：</td><td><{$Host.ip}></td>
+							<td align="right">到期时间：</td><td><{$Host.end_date}></td>
+						</tr>
+					</foreach>
+					<tr>
+						<th colspan='4'><{:C('EXPIRE_DATE')}>天内 域名到期产品</th>
+					</tr>
+					<foreach name="Domain" item="Domain">
+						<tr style="color:red;">
+							<td align="right">域名：</td><td><{$Domain.name}></td>
+							<td align="right">到期时间：</td><td><{$Domain.end_date}></td>
+						</tr>
+					</foreach>
+				</table>
+			</div>
+
+			<div title="近期登录" collapsible="true" style="padding:8px;">
+				<foreach name="lately_Login" item="lately_Login">
+				[<{$lately_Login.date}>] 登录IP：<{$lately_Login.ip}><br/>
+				</foreach>
+			</div>
+
+			<div title="<{$update_Info.title}>" collapsible="true" style="padding:8px;">
+				<{$update_Info.content|htmlspecialchars_decode}>
+			</div>
+		</div>
+
+		<div style="width:50%">
+			<div title="<{$alipay_Info.title}>" collapsible="true" style="padding:8px;">
+				<{$alipay_Info.content|htmlspecialchars_decode}>
+			</div>
+			<div title="<{$safe_Info.title}>" collapsible="true" style="padding:8px;">
+				<{$safe_Info.content|htmlspecialchars_decode}>
+			</div>
+
+			<div title="<{$system_Info.title}>" collapsible="true" style="padding:8px;">
+				<{$system_Info.content|htmlspecialchars_decode}>
+			</div>
+		</div>
+	</div>
+
+</div>

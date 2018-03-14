@@ -1,0 +1,33 @@
+<form id="editDoctor" action="<{:U('Core/editDoctor')}>" method="post">
+	<input type="hidden" name="editDoctor" value="editDoctor" />
+	<input type="hidden" name="id" value="<{$Doctor.id}>" />
+	<table cellspacing="6" width="100%">
+		<tr>
+			<td>医生名称：</td>
+			<td><input class="easyui-textbox" data-options="required:true,validType:['length[2,20]']"  name="title" type="text" style="width:160px" value="<{$Doctor.title}>" /></td>
+		</tr>
+		<tr>
+			<td>医生编号：</td>
+			<td><input class="easyui-textbox" data-options="required:true,validType:['length[2,20]']"  name="number" type="text" style="width:160px" value="<{$Doctor.number}>" /></td>
+		</tr>
+		<tr>
+			<td>手机号码：</td>
+			<td><input class="easyui-textbox" data-options="validType:['length[2,20]']"  name="phone" type="text" style="width:160px" value="<{$Doctor.phone}>" /></td>
+		</tr>
+		<tr>
+			<td>邮件地址：</td>
+			<td><input class="easyui-textbox" data-options="validType:['length[2,20]']"  name="email" type="text" style="width:160px" value="<{$Doctor.email}>" /></td>
+		</tr>
+		<tr>
+			<td>所属医院：</td>
+			<td><input class="easyui-combobox" data-options="valueField: 'id',required:true,textField: 'title',url: '<{:U('CoreCommon/listHosp')}>'"  name="hosp_id" style="width:170px" value="<{$Doctor.hosp_id}>" /></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td align="right">
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="$.Oa.confirm('$.Oa.doForm(\'#editDoctor\')')">编辑医生</a>
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="$($.Oa.dialog_1).dialog('close')">关闭窗口</a>
+			</td>
+		</tr>
+	</table>
+</form>

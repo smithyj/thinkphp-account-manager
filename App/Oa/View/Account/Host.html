@@ -1,0 +1,136 @@
+<table id="Account_Host"></table>
+<div id="Account_Host_Search">
+	<table cellspacing="0" cellpadding="0">
+		<tbody>
+			<tr>
+				<td>
+					<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" onclick="Account_Host.add()">
+						<span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">添加</span><span class="l-btn-icon icons-table-table_add">&nbsp;</span></span>
+					</a>
+					<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" onclick="$.Oa.refresh()">
+						<span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">刷新</span><span class="l-btn-icon icons-table-table_refresh">&nbsp;</span></span>
+					</a>
+					<br />
+					<form id="Account_Host_Search_Form" style="float:right">
+						<span style="padding-left:10px;">服务商：</span><input name="search[service_id]" class="easyui-combobox" style="width:120px" data-options="valueField: 'id',textField: 'title',url: '<{:U('AccountCommon/listService')}>/type/all'">
+						<a href="javascript:;" onclick="Account_Host.search()" class="easyui-linkbutton" iconCls
+="icons-table-table">搜索</a>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+window.Account_Host = {
+	//工具栏
+	toolbar: "#Account_Host_Search",
+	//搜索
+	search: function(){
+		$("#Account_Host").datagrid('loadData', { total: 0, rows: [] });
+		var queryParams = $("#Account_Host").datagrid('options').queryParams;
+		$.each($("#Account_Host_Search_Form").serializeArray(), function() {
+			queryParams[$(this).attr('name')] = $(this).attr('value');
+		});
+		$("#Account_Host").datagrid({pageNumber: 1});
+	},
+	//添加服务器
+	add: function(){
+		$($.Oa.dialog_1).dialog({
+			title: '添加服务器',
+			width: '285',
+			height: '430',
+			iconCls: 'icon-add',
+			href: '<{:U("Account/addHost/")}>',
+			modal: true
+		});
+	},
+
+	//编辑服务器
+	edit: function(id){
+		if(id == null){
+			var row = $('#Account_Host').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$($.Oa.dialog_1).dialog({
+			title: '编辑服务器',
+			width: '285',
+			height: '430',
+			iconCls: 'icon-edit',
+			href: '<{:U("Account/editHost/")}>/id/'+id,
+			modal: true
+		});
+	},
+
+	//删除服务器
+	delete: function(id){
+		if(id == null){
+			var row = $('#Account_Host').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$.Oa.confirm('$.Oa.delData("'+id+'","<{:U("Account/delHost")}>")')
+	}
+}
+</script>
+<script>
+/**
+ * 服务器容器实例化数据
+ */
+$("#Account_Host").datagrid({
+	title: "应用中心 > 账号关系系统 > 服务器管理",
+	singleSelect:true,
+	nowrap:true,
+	border: false,
+	fitColumns: true,
+	fit: true,
+	toolbar: Account_Host.toolbar,
+	idField: 'id',
+	rownumbers: true,
+	animate: true,
+	url: "<{:U('Account/Host')}>",
+	columns:[[
+		{field:'id',title:'ID',align:'center',width:20},
+		{field:'ip',title:'服务器IP',width:50},
+		{field:'mstsc_port',title:'远程端口',width:30},
+		{field:'mstsc_user',title:'远程账号',width:50},
+		{field:'mstsc_pass',title:'远程密码',width:50},
+		{field:'ftp_port',title:'FTP端口',width:30},
+		{field:'mysql_user',title:'数据库用户',width:30},
+		{field:'mysql_pass',title:'数据库密码',width:50},
+		{field:'mysql_port',title:'数据库端口',width:30},
+		{field:'mysql_dir',title:'数据库目录',width:50},
+		{field:'end_date',title:'到期时间',width:37},
+		{field:'service_title',title:'所属服务商',width:50},
+		{field:'remake',title:'服务器备注',width:100}
+	]],
+	pagination:true,
+	pagePosition:'bottom',
+	pageNumber:1,
+	pageSize:20,
+	pageList:[20,30,50],
+	onDblClickRow: function(rowIndex,rowData){
+		Account_Host.edit(rowData.id);
+	},
+	onRowContextMenu: function(e, rowIndex,rowData){
+		e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("unselectAll"); //取消所有选中项
+        $(this).datagrid("selectRow",rowIndex); //根据索引选中该行
+        $('#Account_Host_Menu').menu('show', {//显示右键部门
+            left: e.pageX,//在鼠标点击处显示部门
+            top: e.pageY
+        });
+	}
+});
+</script>
+<div id="Account_Host_Menu" class="easyui-menu" style="display:none;">
+	<div data-options="iconCls:'icon-edit'" onclick="Account_Host.edit()">修改</div>
+	<div data-options="iconCls:'icon-cancel'" onclick="Account_Host.delete()">删除</div>
+</div>

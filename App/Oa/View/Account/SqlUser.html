@@ -1,0 +1,130 @@
+<table id="Account_SqlUser"></table>
+<div id="Account_SqlUser_Search">
+	<table cellspacing="0" cellpadding="0">
+		<tbody>
+			<tr>
+				<td>
+					<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" onclick="Account_SqlUser.add()">
+						<span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">添加</span><span class="l-btn-icon icons-table-table_add">&nbsp;</span></span>
+					</a>
+					<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" onclick="$.Oa.refresh()">
+						<span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">刷新</span><span class="l-btn-icon icons-table-table_refresh">&nbsp;</span></span>
+					</a>
+					<br />
+					<form id="Account_SqlUser_Search_Form" style="float:right">
+						<span style="padding-left:10px;">名称：</span>
+						<input class="easyui-textbox" name="search[sql_user]" type="text" style="width:100px" />
+						<span style="padding-left:10px;">服务器：</span><input name="search[host_id]" class="easyui-combobox" style="width:120px" data-options="valueField: 'id',textField: 'title',url: '<{:U('AccountCommon/listHost')}>/type/all'">
+						<a href="javascript:;" onclick="Account_SqlUser.search()" class="easyui-linkbutton" iconCls
+="icons-table-table">搜索</a>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+window.Account_SqlUser = {
+	//工具栏
+	toolbar: "#Account_SqlUser_Search",
+	//搜索
+	search: function(){
+		$("#Account_SqlUser").datagrid('loadData', { total: 0, rows: [] });
+		var queryParams = $("#Account_SqlUser").datagrid('options').queryParams;
+		$.each($("#Account_SqlUser_Search_Form").serializeArray(), function() {
+			queryParams[$(this).attr('name')] = $(this).attr('value');
+		});
+		$("#Account_SqlUser").datagrid({pageNumber: 1});
+	},
+	//添加数据库用户
+	add: function(){
+		$($.Oa.dialog_1).dialog({
+			title: '添加数据库用户',
+			width: '275',
+			height: '155',
+			iconCls: 'icon-add',
+			href: '<{:U("Account/addSqlUser/")}>',
+			modal: true
+		});
+	},
+
+	//编辑数据库用户
+	edit: function(id){
+		if(id == null){
+			var row = $('#Account_SqlUser').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$($.Oa.dialog_1).dialog({
+			title: '编辑数据库用户',
+			width: '275',
+			height: '155',
+			iconCls: 'icon-edit',
+			href: '<{:U("Account/editSqlUser/")}>/id/'+id,
+			modal: true
+		});
+	},
+
+	//删除数据库用户
+	delete: function(id){
+		if(id == null){
+			var row = $('#Account_SqlUser').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$.Oa.confirm('$.Oa.delData("'+id+'","<{:U("Account/delSqlUser")}>")')
+	}
+}
+</script>
+<script>
+/**
+ * 数据库用户容器实例化数据
+ */
+$("#Account_SqlUser").datagrid({
+	title: "应用中心 > 账号关系系统 > 数据库用户管理",
+	singleSelect:true,
+	nowrap:true,
+	border: false,
+	fitColumns: true,
+	fit: true,
+	toolbar: Account_SqlUser.toolbar,
+	idField: 'id',
+	rownumbers: true,
+	animate: true,
+	url: "<{:U('Account/SqlUser')}>",
+	columns:[[
+		{field:'id',title:'ID',align:'center',width:20},
+		{field:'sql_user',title:'数据库用户账号',width:50},
+		{field:'sql_pass',title:'数据库用户密码',width:50},
+		{field:'web_count',title:'绑定网站数',width:50,align:'center'},
+		{field:'ip',title:'所属服务器',width:50},
+	]],
+	pagination:true,
+	pagePosition:'bottom',
+	pageNumber:1,
+	pageSize:20,
+	pageList:[20,30,50],
+	onDblClickRow: function(rowIndex,rowData){
+		Account_SqlUser.edit(rowData.id);
+	},
+	onRowContextMenu: function(e, rowIndex,rowData){
+		e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("unselectAll"); //取消所有选中项
+        $(this).datagrid("selectRow",rowIndex); //根据索引选中该行
+        $('#Account_SqlUser_Menu').menu('show', {//显示右键部门
+            left: e.pageX,//在鼠标点击处显示部门
+            top: e.pageY
+        });
+	}
+});
+</script>
+<div id="Account_SqlUser_Menu" class="easyui-menu" style="display:none;">
+	<div data-options="iconCls:'icon-edit'" onclick="Account_SqlUser.edit()">修改</div>
+	<div data-options="iconCls:'icon-cancel'" onclick="Account_SqlUser.delete()">删除</div>
+</div>

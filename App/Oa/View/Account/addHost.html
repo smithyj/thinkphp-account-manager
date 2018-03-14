@@ -1,0 +1,60 @@
+<form id="addHost" action="<{:U('Account/addHost')}>" method="post">
+	<input type="hidden" name="addHost" value="addHost" />
+	<table width="100%">
+		<tr>
+			<td>所属服务商：</td>
+			<td><input class="easyui-combobox" data-options="valueField: 'id',required:true,textField: 'title',url: '<{:U('AccountCommon/listService')}>'"  name="service_id" style="width:170px" /></td>
+		</tr>
+		<tr>
+			<td>服务器IP：</td>
+			<td><input class="easyui-textbox" data-options="required:true,validType:['length[7,15]']"  name="ip" type="text" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>远程端口：</td>
+			<td><input class="easyui-textbox" name="mstsc_port" type="text" data-options="required:true" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>远程账号：</td>
+			<td><input class="easyui-textbox" name="mstsc_user" type="text" data-options="required:true" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>远程密码：</td>
+			<td><input class="easyui-textbox" name="mstsc_pass" type="text" data-options="required:true" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>FTP端口：</td>
+			<td><input class="easyui-textbox" name="ftp_port" type="text" data-options="required:true" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>数据库用户：</td>
+			<td><input class="easyui-textbox" name="mysql_user" type="text" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>数据库密码：</td>
+			<td><input class="easyui-textbox" name="mysql_pass" type="text" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>数据库端口：</td>
+			<td><input class="easyui-textbox" name="mysql_port" type="text" data-options="required:true" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>数据库目录：</td>
+			<td><input class="easyui-textbox" name="mysql_dir" type="text" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>到期时间：</td>
+			<td><input class="easyui-datebox" name="end_date" type="text" data-options="required:true" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>备注信息：</td>
+			<td><input class="easyui-textbox" data-options="multiline:true"  name="remake" type="text" style="width:170px;height:70px;" /></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td align="right">
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="$.Oa.confirm('$.Oa.doForm(\'#addHost\')')">添加服务器</a>
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="$($.Oa.dialog_1).dialog('close')">关闭窗口</a>
+			</td>
+		</tr>
+	</table>
+</form>

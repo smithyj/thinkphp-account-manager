@@ -1,0 +1,74 @@
+<form id="addWeb" action="<{:U('Account/addWeb')}>" method="post">
+	<input type="hidden" name="addWeb" value="addWeb" />
+	<table width="100%">
+		<tr>
+			<td>IIS标识：</td>
+			<td><input class="easyui-textbox" data-options="required:true,validType:['length[1,100]']"  name="iis_name" type="text" style="width:168px" /></td>
+			<td>网站标题：</td>
+			<td><input class="easyui-textbox" data-options="required:true,validType:['length[1,100]']"  name="title" type="text" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>网站目录：</td>
+			<td><input class="easyui-textbox" data-options="required:true,validType:['length[1,100]']"  name="web_dir" type="text" style="width:168px" /></td>
+			<td>后台目录：</td>
+			<td><input class="easyui-textbox" name="admin_dir" type="text" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>后台账号：</td>
+			<td><input class="easyui-textbox" name="admin_user" type="text" style="width:168px" /></td>
+			<td>后台密码：</td>
+			<td><input class="easyui-textbox" name="admin_pass" type="text" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>网站类型：</td>
+			<td><input class="easyui-combobox" data-options="valueField: 'id',required:true,textField: 'title',url: '<{:U('AccountCommon/listWebType')}>'"  name="web_type_id" style="width:170px" /></td>
+			<td>所属医院：</td>
+			<td><input class="easyui-combobox" data-options="valueField: 'id',required:true,textField: 'title',url: '<{:U('CoreCommon/listHosp')}>'"  name="hosp_id" style="width:170px" /></td>
+		</tr>
+		<tr>
+			<td>所属主机：</td>
+			<td><input class="easyui-combobox" data-options="valueField: 'id',required:true,textField: 'title',url: '<{:U('AccountCommon/listHost')}>'" id="addWeb_host_id"  name="host_id" style="width:170px" /></td>
+			<td>所属FTP：</td>
+			<td><input class="easyui-combobox" data-options="valueField: 'id',required:true,textField: 'title'"  name="ftp_id" style="width:170px" id="addWeb_ftp_id" /></td>
+		</tr>
+		<tr>
+			<td>数据用户：</td>
+			<td><input class="easyui-combobox" data-options="valueField: 'id',textField: 'title'"  name="sql_user_id" style="width:170px" id="addWeb_sql_user_id" /></td>
+			<td>数据对象：</td>
+			<td><input class="easyui-combobox" data-options="valueField: 'id',textField: 'title'"  name="sql_object_id" style="width:170px" id="addWeb_sql_object_id" /></td>
+		</tr>
+		<tr>
+			<td>绑定网址：</td>
+			<td><input class="easyui-combobox" data-options="valueField: 'id',required:true,textField: 'title'"  name="dns_domain_id[]" style="width:170px" id="addWeb_dns_domain_id" /></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td align="right">
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="$.Oa.confirm('$.Oa.doForm(\'#addWeb\')')">添加网站</a>
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="$($.Oa.dialog_1).dialog('close')">关闭窗口</a>
+			</td>
+		</tr>
+	</table>
+</form>
+<script>
+$('#addWeb_host_id').combobox({
+	onSelect:function(record){
+		var liandong = [];
+		liandong.push(['#addWeb_ftp_id','<{:U("AccountCommon/listFtp")}>']);
+		liandong.push(['#addWeb_sql_user_id','<{:U("AccountCommon/listSqlUser")}>']);
+		liandong.push(['#addWeb_sql_object_id','<{:U("AccountCommon/listSqlObject")}>']);
+		liandong.push(['#addWeb_dns_domain_id','<{:U("AccountCommon/listDnsDomain")}>']);
+        //刷新数据
+        for(x in liandong){
+	        $(liandong[x][0]).combobox({
+	            url:liandong[x][1]+"/host_id/"+record.id,
+	            multiple: x == 3 ? true : false,
+	        }).combobox('clear');
+    	}
+    }
+});
+</script>

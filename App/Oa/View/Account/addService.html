@@ -1,0 +1,40 @@
+<form id="addService" action="<{:U('Account/addService')}>" method="post">
+	<input type="hidden" name="addService" value="addService" />
+	<table width="100%">
+		<tr>
+			<td>服务商名称：</td>
+			<td><input class="easyui-textbox" data-options="required:true,validType:['length[2,20]']"  name="title" type="text" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>服务商网址：</td>
+			<td><input class="easyui-textbox" name="url" type="text" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>登录账号：</td>
+			<td><input class="easyui-textbox" name="username" type="text" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>登录密码：</td>
+			<td><input class="easyui-textbox" name="password" type="text" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>绑定手机：</td>
+			<td><input class="easyui-textbox" name="phone" type="text" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>绑定邮箱：</td>
+			<td><input class="easyui-textbox" name="email" type="text" style="width:168px" /></td>
+		</tr>
+		<tr>
+			<td>备注信息：</td>
+			<td><input class="easyui-textbox" data-options="multiline:true"  name="remake" type="text" style="width:170px;height:100px;" /></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td align="right">
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="$.Oa.confirm('$.Oa.doForm(\'#addService\')')">添加服务商</a>
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="$($.Oa.dialog_1).dialog('close')">关闭窗口</a>
+			</td>
+		</tr>
+	</table>
+</form>

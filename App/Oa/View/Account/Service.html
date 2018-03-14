@@ -1,0 +1,105 @@
+<table id="Account_Service"></table>
+<script type="text/javascript">
+window.Account_Service = {
+	//工具栏
+	toolbar: [
+		{ text: '添加', iconCls: 'icons-table-table_add', handler: function(){Account_Service.add();} },
+		{ text: '刷新', iconCls: 'icons-table-table_refresh', handler: function(){$.Oa.refresh();} }
+	],
+	//添加服务商
+	add: function(){
+		$($.Oa.dialog_1).dialog({
+			title: '添加服务商',
+			width: '270',
+			height: '340',
+			iconCls: 'icon-add',
+			href: '<{:U("Account/addService/")}>',
+			modal: true
+		});
+	},
+
+	//编辑服务商
+	edit: function(id){
+		if(id == null){
+			var row = $('#Account_Service').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$($.Oa.dialog_1).dialog({
+			title: '编辑服务商',
+			width: '270',
+			height: '340',
+			iconCls: 'icon-edit',
+			href: '<{:U("Account/editService/")}>/id/'+id,
+			modal: true
+		});
+	},
+
+	//删除服务商
+	delete: function(id){
+		if(id == null){
+			var row = $('#Account_Service').datagrid("getSelected");
+			if(row == null){
+				$.Oa.tip('提示信息', '请选择要处理的数据','error');
+				return false;
+			}
+			id = row.id;
+		}
+		$.Oa.confirm('$.Oa.delData("'+id+'","<{:U("Account/delService")}>")')
+	}
+}
+</script>
+<script>
+/**
+ * 服务商容器实例化数据
+ */
+$("#Account_Service").datagrid({
+	title: "应用中心 > 账号关系系统 > 服务商管理",
+	singleSelect:true,
+	nowrap:true,
+	border: false,
+	fitColumns: true,
+	fit: true,
+	toolbar: Account_Service.toolbar,
+	idField: 'id',
+	rownumbers: true,
+	animate: true,
+	url: "<{:U('Account/Service')}>",
+	columns:[[
+		{field:'id',title:'ID',align:'center',width:20},
+		{field:'title',title:'名称',width:50},
+		{field:'domain_count',title:'域名数',width:20,align:'center'},
+		{field:'host_count',title:'服务器数',width:30,align:'center'},
+		{field:'url',title:'网址',width:50},
+		{field:'username',title:'登录账号',width:50},
+		{field:'password',title:'登录密码',width:50},
+		{field:'phone',title:'绑定手机',width:50},
+		{field:'email',title:'绑定邮箱',width:50},
+		{field:'remake',title:'备注',width:100}
+	]],
+	pagination:true,
+	pagePosition:'bottom',
+	pageNumber:1,
+	pageSize:20,
+	pageList:[20,30,50],
+	onDblClickRow: function(rowIndex,rowData){
+		Account_Service.edit(rowData.id);
+	},
+	onRowContextMenu: function(e, rowIndex,rowData){
+		e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("unselectAll"); //取消所有选中项
+        $(this).datagrid("selectRow",rowIndex); //根据索引选中该行
+        $('#Account_Service_Menu').menu('show', {//显示右键部门
+            left: e.pageX,//在鼠标点击处显示部门
+            top: e.pageY
+        });
+	}
+});
+</script>
+<div id="Account_Service_Menu" class="easyui-menu" style="display:none;">
+	<div data-options="iconCls:'icon-edit'" onclick="Account_Service.edit()">修改</div>
+	<div data-options="iconCls:'icon-cancel'" onclick="Account_Service.delete()">删除</div>
+</div>

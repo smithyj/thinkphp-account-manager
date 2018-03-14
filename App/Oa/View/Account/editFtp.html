@@ -1,0 +1,33 @@
+<form id="editFtp" action="<{:U('Account/editFtp')}>" method="post">
+	<input type="hidden" name="editFtp" value="editFtp" />
+	<input type="hidden" name="id" value="<{$Ftp.id}>" />
+	<table width="100%">
+		<tr>
+			<td>所属服务器：</td>
+			<td><input class="easyui-combobox" data-options="valueField: 'id',required:true,textField: 'title',url: '<{:U('AccountCommon/listHost')}>'"  name="host_id" style="width:170px" value="<{$Ftp.host_id}>" /></td>
+		</tr>
+		<tr>
+			<td>FTP账号：</td>
+			<td><input class="easyui-textbox" name="ftp_user" type="text" data-options="required:true" style="width:168px" value="<{$Ftp.ftp_user}>" /></td>
+		</tr>
+		<tr>
+			<td>FTP密码：</td>
+			<td><input class="easyui-textbox" name="ftp_pass" type="text" data-options="required:true" style="width:168px" value="<{$Ftp.ftp_pass}>" /></td>
+		</tr>
+		<tr>
+			<td>主目录：</td>
+			<td><input class="easyui-textbox" name="ftp_dir" type="text" data-options="required:true" style="width:168px" value="<{$Ftp.ftp_dir}>" /></td>
+		</tr>
+		<tr>
+			<td>备注信息：</td>
+			<td><input class="easyui-textbox" data-options="multiline:true"  name="remake" type="text" style="width:170px;height:70px;" value="<{$Ftp.remake}>" /></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td align="right">
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="$.Oa.confirm('$.Oa.doForm(\'#editFtp\')')">编辑FTP</a>
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="$($.Oa.dialog_1).dialog('close')">关闭窗口</a>
+			</td>
+		</tr>
+	</table>
+</form>
